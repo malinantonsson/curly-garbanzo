@@ -70,6 +70,13 @@ gulp.task('fonts', function () {
         }));
 });
 
+gulp.task('copy-folders', function() {
+  return  gulp.src( appPath + '/**/*.*' )
+    .pipe(gulp.dest( 'dist/' ))
+    .pipe(browserSync.reload({
+      stream: true
+    }));
+  });
 
 gulp.task('pages', function () {
     return  gulp.src( appPath + '/*.html' )
@@ -152,6 +159,7 @@ gulp.task('default', ['clean'], function (cb) {
 
   runSequence([
       'pages',
+      'copy-folders',
       'styles',
       'fonts',
       'scripts',
