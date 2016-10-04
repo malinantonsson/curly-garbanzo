@@ -37,7 +37,7 @@ var timeCnt = 0;
 			maxNodeNum = Math.random()* 20+40;
 		}
 		forceAmp = (Math.random()<0.8)? Math.random()*3 + 0.05 : Math.random()*-10-5;
-		frictionAmp = Math.random()*0.6 + 0.5;
+		frictionAmp = Math.random()*0.4 + 0.5;
 		
 		//Seup Voronoi
 		boundingBox = {xl:0, xr:view.size.width, yt:0, yb:view.size.height};
@@ -45,7 +45,7 @@ var timeCnt = 0;
 		
 		for(var i=0; i<maxNodeNum; i++){
 			var pt = new Node(Math.random()*view.size.width, Math.random()*view.size.height);
-			var v = Math.random()*3;
+			var v = Math.random()*.5; //used to be 3
 			var rad = Math.random()*360*Math.PI/180;
 			pt.vx = Math.cos(rad)*v;
 			pt.vy = Math.sin(rad)*v;
