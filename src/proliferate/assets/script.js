@@ -108,7 +108,7 @@ function onFrame(b) {
         lines[a].update()
     }
     var c = new Date().getTime();
-    if (c - d > 15 && isKillAll == false) {
+    if (c - d > 50 && isKillAll == false) {
         killAll()
     }
     if (killedCount == dots.length && dots.length > 1) {
@@ -258,6 +258,7 @@ function objectIndexForArray(c, a) {
     }
     return -1
 }
+
 var Camera = function() {
     this.fixedPositionNode;
     this.positionNode;
@@ -266,6 +267,7 @@ var Camera = function() {
     this.scalingV = 0;
     this.scalingF = 0
 };
+
 Camera.prototype.update = function() {
     this.scalingF = (this.tscaling - this.scaling) * 0.01;
     this.scalingV += this.scalingF;
@@ -275,12 +277,13 @@ Camera.prototype.update = function() {
         this.scaling = 0.1
     }
 };
+
 var Dot = function(a) {
     this.node = new GLDSpringNode(a.x, a.y, false);
     this.node.deccel = 0.95;
     this.maxConnection = Math.floor(Math.pow(Math.random() * 3, 2) + 1) + 1;
     this.connectionCount = 0;
-    this.radius = this.maxConnection * 2;
+    this.radius = this.maxConnection * 10;
     this.tscaling = 1;
     this.scaling = 1;
     this.scalingV = 8;
@@ -291,6 +294,7 @@ var Dot = function(a) {
     this.killFlag = false;
     this.killCompleteFlag = false
 };
+
 Dot.prototype.update = function() {
     if (this.path) {
         this.path.remove()
