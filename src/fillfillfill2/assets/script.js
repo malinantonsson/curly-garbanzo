@@ -12,7 +12,15 @@ var Node = function(j, d) {
     this.path.fillColor = f
 };
 Node.prototype.setupAnimation = function() {
-    this.path.opacity = 0
+    this.path.opacity = 0;
+    this.path.scale(.1);
+    //console.log(this.path.scaling);
+    this.scaled = 0.1;
+    
+    //this.path.bounds.scale(1);
+   // console.log(this.sc);
+    //this.scaling = 0.5;
+    //this.path.scaling = this.scaling;
 };
 
 Node.prototype.createTriangle = function() {
@@ -20,9 +28,25 @@ Node.prototype.createTriangle = function() {
     a.addSegments([new Point(0, -36.622), new Point(41.929, 36), new Point(-
         41.9297, 36)]);
     a.closed = true;
+    
     return a
 };
+
 Node.prototype.update = function() {
+    //this.scaling = .5;
+    //this.path.scale(1);
+    //console.log(this.path);
+    //this.path.bounds.scale(1);
+    //this.path.scaling = this.scaling;
+    if(this.scaled < 1) {
+        this.path.scale(this.scaled);
+        console.log(this.scaled);
+        this.scaled = this.scaled + .1;
+    }
+    if(this.scaled > 1) {
+        this.scaled = 1;
+    } 
+
     this.path.opacity += (1 - this.path.opacity) * 0.2;
     if (this.path.opacity > 0.99) {
         this.path.opacity = 1;
@@ -69,6 +93,22 @@ function prepare() {
         sat = Math.random()
     }
 }
+
+// Whenever the user presses the mouse:
+/*function onMouseDown(event) {
+    console.log(event);
+    console.log(nodes);
+    // If the position of the mouse is within the path,
+    // set its fill color to red, otherwise set it to
+    // black:
+    if (nodes[0].path.contains(event.point)) {
+        nodes[0].path.fillColor = 'red';
+    } else {
+        nodes[0].path.fillColor = 'black';
+    }
+}*/
+
+
 
 function reset() {
     removeAllNodes();
@@ -121,8 +161,8 @@ function createNode() {
         var d = a.path.getIntersections(m.path);
 
         //a.position = a.path.getNearestPoint(m.path);
-        console.log(j);
-        if (m.path.contains(a.path)) {
+
+        if (m.path.contains(a.path.position)) {
             a.path.remove();
             nodes.pop();
             return false
