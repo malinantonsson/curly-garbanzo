@@ -149,8 +149,9 @@ gulp.task('dev', ['default', 'setWatch'], function() {
   });
 
   gulp.watch(['src/sass/**/*.scss'], ['styles', reload]);
-  gulp.watch(['src/**/*.html'], ['pages', reload]);
+  gulp.watch(['src/**/*.html'], ['copy-folders', reload]);
   gulp.watch(['src/img/**/*'], ['images', reload]);
+  gulp.watch(['src/**/**/*'], ['copy-folders', reload]);
   gulp.watch(['src/js/**/*.js'], ['scripts', reload]);
 });
 
