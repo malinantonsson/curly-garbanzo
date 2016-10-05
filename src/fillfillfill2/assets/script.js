@@ -13,14 +13,12 @@ var Node = function(j, d) {
 };
 Node.prototype.setupAnimation = function() {
     this.path.opacity = 0;
-    this.path.scale(.1);
-    //console.log(this.path.scaling);
-    this.scaled = 0.1;
+    this.copy = this.path.clone();
     
-    //this.path.bounds.scale(1);
-   // console.log(this.sc);
-    //this.scaling = 0.5;
-    //this.path.scaling = this.scaling;
+
+
+
+    //this.copy.opacity = 1;
 };
 
 Node.prototype.createTriangle = function() {
@@ -33,26 +31,17 @@ Node.prototype.createTriangle = function() {
 };
 
 Node.prototype.update = function() {
-    //this.scaling = .5;
-    //this.path.scale(1);
-    //console.log(this.path);
-    //this.path.bounds.scale(1);
-    //this.path.scaling = this.scaling;
-    if(this.scaled < 1) {
-        this.path.scale(this.scaled);
-        console.log(this.scaled);
-        this.scaled = this.scaled + .1;
-    }
-    if(this.scaled > 1) {
-        this.scaled = 1;
-    } 
 
-    this.path.opacity += (1 - this.path.opacity) * 0.2;
+    
+
+    this.path.opacity += (1 - this.path.opacity) * 0.2;  
+
     if (this.path.opacity > 0.99) {
         this.path.opacity = 1;
         this.update = function() {}
     }
 };
+
 Node.prototype.teardown = function() {
     if (this.path) {
         this.path.remove()
@@ -62,7 +51,7 @@ var nodes = [];
 var c = 1.2;
 var a0;
 var r0;
-var maxNodeNum = 3000;
+var maxNodeNum = 4000;
 var initialSize;
 var baseR;
 var cnt = 0;
@@ -93,21 +82,6 @@ function prepare() {
         sat = Math.random()
     }
 }
-
-// Whenever the user presses the mouse:
-/*function onMouseDown(event) {
-    console.log(event);
-    console.log(nodes);
-    // If the position of the mouse is within the path,
-    // set its fill color to red, otherwise set it to
-    // black:
-    if (nodes[0].path.contains(event.point)) {
-        nodes[0].path.fillColor = 'red';
-    } else {
-        nodes[0].path.fillColor = 'black';
-    }
-}*/
-
 
 
 function reset() {
