@@ -3,6 +3,7 @@
 	var swipe = {
 		init: function() {
 			swipeTime = 800;
+			setTime = 3500;
 
 			var wrapper = document.querySelector('.grid');
 			//var firstEl = document.querySelector('#grid-3x3_1');
@@ -10,16 +11,42 @@
 			var firstEl = document.querySelector('.grid__animated--1');
 			var secondEl = document.querySelector('.grid__animated--2');
 
+			var start = function(){
 
-			firstEl.classList.add('swipe-down');
+				firstEl.classList.add('swipe-down');
 
-			window.setTimeout(function() {
-				firstEl.classList.add('swipe-right');
-			}, swipeTime);
+				window.setTimeout(function() {
+					firstEl.classList.add('swipe-right');
+				}, swipeTime);
 
-			window.setTimeout(function() {
-				secondEl.classList.add('swipe-down');
-			}, swipeTime * 2);
+				window.setTimeout(function() {
+					secondEl.classList.add('swipe-down');
+				}, swipeTime * 2);
+
+				window.setTimeout(function() {
+					reverse();
+				}, setTime);
+			};
+
+
+
+			var reverse = function() {
+				secondEl.classList.remove('swipe-down');
+
+				window.setTimeout(function() {
+					firstEl.classList.remove('swipe-right');
+				}, swipeTime);
+
+				window.setTimeout(function() {
+					firstEl.classList.remove('swipe-down');
+				}, swipeTime * 2);
+
+				window.setTimeout(function() {
+					start();
+				}, setTime);
+			};
+
+			start();
 
 			
 
