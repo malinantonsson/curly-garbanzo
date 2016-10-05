@@ -14,11 +14,10 @@ var Node = function(j, d) {
 Node.prototype.setupAnimation = function() {
     this.path.opacity = 0;
     this.copy = this.path.clone();
-    
+    this.scaling = 0.1;
+    this.copy.scaling = this.scaling;
 
-
-
-    //this.copy.opacity = 1;
+    this.copy.opacity = 1;
 };
 
 Node.prototype.createTriangle = function() {
@@ -31,20 +30,18 @@ Node.prototype.createTriangle = function() {
 };
 
 Node.prototype.update = function() {
+    this.scaling = this.scaling + (1 - this.scaling) * 0.1;
+    this.copy.scaling = this.scaling;
 
-    
-
-    this.path.opacity += (1 - this.path.opacity) * 0.2;  
-
-    if (this.path.opacity > 0.99) {
-        this.path.opacity = 1;
-        this.update = function() {}
-    }
 };
 
 Node.prototype.teardown = function() {
     if (this.path) {
         this.path.remove()
+    }
+
+    if(this.copy) {
+        this.copy.remove();
     }
 };
 var nodes = [];
@@ -86,7 +83,7 @@ function prepare() {
 
 function reset() {
     removeAllNodes();
-    prepare()
+    prepare();
 }
 
 function removeAllNodes() {
