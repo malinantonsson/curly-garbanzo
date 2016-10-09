@@ -92,9 +92,15 @@
 		start: function(animation){
 			var s = this.ui.script;
 			var canvas = this.ui.canvas;
+			
+			if( paper) {
+				if(paper.project) {
+					paper.project.activeLayer.removeChildren();
+					
+				}
+			}
 
 			var animation = animation;
-
 
 			s.type = animation.type;
 			s.id = animation.id;
@@ -108,7 +114,7 @@
 
 			if( animation.type === 'text/paperscript' ) {
 				//if paperscript, append script to DOM, remove ignore attribute and force paper to reload
-				document.head.appendChild(s);
+				//document.head.appendChild(s);
 				s.removeAttribute('data-paper-ignore');
 				var res = paper.PaperScript.load(s);
 
@@ -118,8 +124,11 @@
 
 			} else if ( animation.type === 'text/javascript' ) {
 				//if javascript, append file
-				document.head.appendChild(s);
+				//document.head.appendChild(s);
 			}
+
+		},
+		end: function() {
 
 		},
 		init: function(){
@@ -127,12 +136,15 @@
 			this.ui.canvas = document.querySelector('#canvas');
 			this.ui.script = document.createElement('script');
 
-			var num = getRandomInt(0, art.length);
+			document.head.appendChild(this.ui.script);
+			
+			this.start(art[0]);
 
-			window.setTimeout(function(){
+			window.setInterval(function(){
+				var num = getRandomInt(0, art.length);
 				//start a random animation
-				self.start(art[num]);
-			}, 500);
+				//self.start(art[num]);
+			}, 10000);
 		}
 	}
  
