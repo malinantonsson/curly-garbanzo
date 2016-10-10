@@ -54,3 +54,9 @@ function addSabo() {}
 
 function onResize(a) {}
 setup();
+
+//var Moire = {}
+
+/*window.moire = layers;
+console.log(window.digitalArt);
+console.log(window);*/

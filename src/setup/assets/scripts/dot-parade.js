@@ -31,6 +31,8 @@ function reset(){
 function animate(){
 	graphics.clear();
 
+	if(!window.DotAnimate) { return; }
+
 	
 	time += 0.02;
 	if(time>3){
@@ -149,9 +151,16 @@ function resize(){
 }
 
 function init(){
-	renderer = PIXI.autoDetectRenderer(window.innerWidth,window.innerHeight);
-	document.body.appendChild(renderer.view);
+
+	renderer = PIXI.autoDetectRenderer(window.innerWidth,window.innerHeight, null, true);
+	document.getElementById('dot-canvas').appendChild(renderer.view);
+	window.DotCanvas = renderer.view;
+	
 	stage = new PIXI.Container();
+
+
+	window.DotContainer = stage;
+	window.DotAnimate = true;
 	
 	background = new PIXI.Graphics();
 	stage.addChild(background);
@@ -167,3 +176,6 @@ function init(){
 
 
 init();
+
+window.DotInit = init;
+
