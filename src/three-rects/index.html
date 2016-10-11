@@ -17,7 +17,7 @@ window.onload = function(){
 
 <script id="processing-code" type="application/processing">
 int gridSize = 120;
-int gridMargin = 120;
+int gridMargin = 200;
 int xNum;
 int yNum;
 float xOffset;
@@ -38,12 +38,15 @@ void setup(){
 void reset(){
   stroke(255, 255);
   noFill();
-  
+
   background(0);
   xNum = 3;
-  yNum = 3;
+  yNum = 2;
+
+  gridSize = ( width - (gridMargin * xNum)) / 3;
+
   xOffset = (width-(xNum*(gridSize+gridMargin)-gridMargin)) * 0.5;
-  yOffset = (height-(yNum*(gridSize+gridMargin)-gridMargin)) * 0.5;
+  yOffset = (height-(yNum*(gridSize+gridMargin)-gridMargin)) * 0;
   
   rectSets = new ArrayList();
   for(int i=0; i<xNum; i++){
