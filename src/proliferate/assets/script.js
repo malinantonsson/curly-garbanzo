@@ -148,7 +148,7 @@ function beacon() {
     var f;
     var h;
     if (dots.length == 0) {
-        h = new Point(view.size.width * 0.5, view.size.height * 0.5);
+        h = new Point(view.size.width * 0.53, view.size.height * 0.5); //this defines start position
         f = new Dot(h);
         f.maxConnection = 5;
         springManager.addNode(f.node);
