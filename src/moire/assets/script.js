@@ -13,7 +13,7 @@ MoireLayer.prototype.setup = function() {
     var a = Math.random() * 100 + 4;
     for (var b = 0; b < 200; b++) {
         var c = new Path.Line(new Point(0, b * a), new Point(4000, b * a));
-        c.strokeColor = new Color(0.8, 0.8, 0.8);
+        c.strokeColor = new Color(1, 1, 1);
         this.group.addChild(c)
     }
 };
@@ -33,6 +33,17 @@ MoireLayer.prototype.update = function() {
 var layers = [];
 
 function setup() {
+    //black background
+    var rect = new Path.Rectangle({
+        point: [0, 0],
+        size: [view.size.width, view.size.height],
+        strokeColor: '#000',
+        selected: true
+    });
+
+    rect.sendToBack();
+    rect.fillColor = '#000000';
+
     for (var b = 0; b < 5; b++) {
         var a = new MoireLayer();
         a.rotationVelocity = (Math.random() - 0.5) * 0.1;
