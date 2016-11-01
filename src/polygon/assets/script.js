@@ -14,6 +14,15 @@ var draggingNode;
 var draggingSpring;
 var nearestNode;
 
+var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7', '#ffffff'];
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+var hex;
+
+
 function setup() {
     springManager = new GLDSpringManager();
     countBeacon = new GLDCountBeacon(5, beacon);
@@ -24,7 +33,7 @@ function setup() {
     
     a = new Path.RegularPolygon(0,0, 3, 1);
     //a = new Path.Circle(new Point(0, 0), 1);
-    a.fillColor = "red";
+    a.fillColor = colours[randomIntFromInterval(0, (colours.length - 1))];
     dotRedSymbol = new Symbol(a);
     linesGroup = new Group();
     dotsGroup = new Group();
@@ -108,7 +117,7 @@ function onFrame(b) {
         lines[a].update()
     }
     var c = new Date().getTime();
-    if (c - d > 10 && isKillAll == false) {
+    if (c - d > 100 && isKillAll == false) {
         killAll()
     }
     if (killedCount == dots.length && dots.length > 1) {
