@@ -121,7 +121,8 @@ function onFrame(b) {
         killAll()
     }
     if (killedCount == dots.length && dots.length > 1) {
-        reset()
+        setup();
+        //reset()
     }
 }
 
@@ -337,7 +338,7 @@ Dot.prototype.update = function() {
     dotsGroup.addChild(this.path)
 };
 Dot.prototype.teardown = function() {
-    this.path.remove()
+    this.path.remove();
 };
 var Line = function(b, a) {
     this.dot0 = b;
