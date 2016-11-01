@@ -2,7 +2,7 @@
 <!-- saved from url=(0054)http://www.fladdict.net/sketches/threerects/index.html -->
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>THREE RECTS</title>
+<title>Triangulate</title>
 <link rel="stylesheet" href="./assets/style.css">
 
 <script language="javascript" src="./assets/processing-1.4.1.min.js"></script>
@@ -17,7 +17,8 @@ window.onload = function(){
 
 <script id="processing-code" type="application/processing">
 int gridSize = 120;
-int gridMargin = 200;
+int gridHeight = 120;
+int gridMargin = 150;
 int xNum;
 int yNum;
 float xOffset;
@@ -37,34 +38,62 @@ void setup(){
 
 void reset(){
   stroke(255, 255);
+  strokeWeight(2); 
   noFill();
 
   background(0);
   xNum = 3;
-  yNum = 2;
+  yNum = 3;
 
   gridSize = ( width - (gridMargin * xNum)) / 3;
+  gridHeight = ( height - (gridMargin * yNum)) / 3
 
   xOffset = (width-(xNum*(gridSize+gridMargin)-gridMargin)) * 0.5;
-  yOffset = (height-(yNum*(gridSize+gridMargin)-gridMargin)) * 0;
+  yOffset = (height-(yNum*(gridHeight+gridMargin)-gridMargin)) * 0;
   
   rectSets = new ArrayList();
-  for(int i=0; i<xNum; i++){
-    for(int j=0; j<yNum; j++){
-      RectSet rs = new RectSet();
-      rs.xOffset = xOffset + i * (gridMargin+gridSize) + gridSize * 0.5;
-      rs.yOffset = yOffset + j * (gridMargin+gridSize) + gridSize * 0.5;
-      rs.rotVx = random(-0.005,0.005);
-      rs.rotVy = random(-0.005,0.005);
-      rs.rotVz = random(-0.005,0.005);
-      rs.ts = 1;
-      rs.sv = 0;
-      rs.reset();
-      rs.s = 1;
-      rectSets.add(rs);
+  var loopX = 0;
+  var loopY = 0;
+    //for(int i=0; i<3; i++){
+
+  var createTriSet = function() {
+
+    RectSet rs = new RectSet();
+    rs.xOffset = xOffset + loopX * (gridMargin+gridSize) + gridSize * 0.5;
+    rs.yOffset = yOffset + loopY * (gridMargin+gridHeight) + gridSize * 0.5;
+    rs.rotVx = random(-0.005,0.005);
+    rs.rotVy = random(-0.005,0.005);
+    rs.rotVz = random(-0.005,0.005);
+    rs.ts = 1;
+    rs.sv = 0;
+    rs.reset();
+    rs.s = 1;
+    rectSets.add(rs);
+
+    if(loopX >= (xNum - 1)) { //if we have enough X triangles, update y value to start new row
+      loopY += 1;
+    }
+
+    if(loopX < xNum)  { 
+      loopX += 1;
+    }
+
+    if(loopX == xNum )  { 
+      if(loopY == yNum) {
+        window.clearInterval(rectYSetLoop);
+      }
+
+      loopX = 0;
     }
   }
-  
+
+  //for(int i=0; i<xNum; i++){
+    //for(int j=0; j<yNum; j++){
+      createTriSet();
+
+      var rectYSetLoop = window.setInterval(function(){
+        createTriSet();
+      }, 1000);
 }
 
 void mousePressed(){
@@ -137,7 +166,10 @@ class RectSet{
   void reset(){
     cnt = 400 + floor(random(0,100));
     s = 0;
+   // var i = 0;
     for(int i=0; i<3; i++){
+    //var rectLoop = window.setInterval(function(){
+        //console.log(i);
         Rectangle r;
         if(rects.size()<i+1){
           r = new Rectangle();
@@ -145,10 +177,10 @@ class RectSet{
         }
         r = (Rectangle)rects.get(i);
         r.x = random(0,gridSize*0.25);
-        r.y = random(0,gridSize*0.25);
+        r.y = random(0,gridHeight*0.25);
         r.z = random(0,gridSize*0.25);
         r.w = random(0,gridSize*0.75);
-        r.h = random(0,gridSize*0.75);
+        r.h = random(0,gridHeight*0.25);
         r.rotX = random(0,PI*2);
         r.rotY = random(0,PI*2);
         r.rotZ = random(0,PI*2);
@@ -167,6 +199,13 @@ class RectSet{
         float sat = random(0,100);
         float bri = random(0,100);
         r.col = color(hue,sat,bri);
+
+        /*i += 1;
+        if(i >= 3) {
+          window.clearInterval(rectLoop);
+        }
+
+      }, 1000);*/
       }
   }
 }

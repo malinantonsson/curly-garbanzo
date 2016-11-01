@@ -163,7 +163,6 @@ var timeCnt = 0;
 	}
 	
 	function draw(){
-		console.log('draw');
 		if(diagram){
 			voronoi.recycle(diagram);
 		}
@@ -224,9 +223,11 @@ var timeCnt = 0;
 		this.fx = 0;
 		this.fy = 0;
 		this.friction = frictionAmp;
-		var r = Math.random();
+		var r = Math.random()*1;
 		var g = Math.random()*r;
 		var b = Math.random()*g;
+
+
 		var col = new Color(r,g,b);
 		col.hue = baseHue;
 		col.saturation = 0.1;

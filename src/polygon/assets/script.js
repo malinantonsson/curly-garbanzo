@@ -108,7 +108,7 @@ function onFrame(b) {
         lines[a].update()
     }
     var c = new Date().getTime();
-    if (c - d > 50 && isKillAll == false) {
+    if (c - d > 10 && isKillAll == false) {
         killAll()
     }
     if (killedCount == dots.length && dots.length > 1) {
@@ -300,13 +300,13 @@ Dot.prototype.update = function() {
         this.path.remove()
     }
     if (this.killFlag && this.killDelay == 0) {
-        this.tscaling = 0.01;
-        this.scalingV = Math.random() * 16;
+        this.tscaling = 100;
+        this.scalingV = Math.random() * 100;
         this.killDelay = -1
     } else {
         if (this.killFlag && this.killDelay < 0) {
-            this.tscaling = 0.001;
-            if (this.killCompleteFlag == false && this.scaling < 0.01) {
+            this.tscaling = 0.1;
+            if (this.killCompleteFlag == false && this.scaling < 0.1) {
                 this.killCompleteFlag = true;
                 killedCount++
             }

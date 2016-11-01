@@ -30,7 +30,7 @@ Node.prototype.createTriangle = function() {
 };
 
 Node.prototype.update = function() {
-    this.scaling = this.scaling + (1 - this.scaling) * 0.08;
+    this.scaling = this.scaling + (1 - this.scaling) * 0.02;
     this.copy.scaling = this.scaling;
 
 };
