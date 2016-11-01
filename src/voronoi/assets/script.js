@@ -20,6 +20,16 @@ var timeCnt = 0;
 	
 	var mouseX;
 	var mouseY;
+
+
+	var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7', '#ffffff'];
+
+	function randomIntFromInterval(min,max) {
+	    return Math.floor(Math.random()*(max-min+1)+min);
+	}
+
+	var hex;
+
 	
 	function setup(){
 		voronoi = new Voronoi();
@@ -86,35 +96,7 @@ var timeCnt = 0;
 	}
 	
 	function applyForce(){
-		/*
-		for(var i=0; i<points.length; i++){
-			var nd = points[i];
-			var dx = nd.x - mouseX;
-			var dy = nd.y - mouseY;
-			var dist = Math.sqrt(dy,dx);
-			var rad = Math.atan2(dy,dx);
-			if(dist>1){
-				nd.fx -= Math.cos(rad) / dist / dist * 100;
-				nd.fy -= Math.sin(rad) / dist / dist * 100;
-			}
-		}
-		
-		for(var i=0; i<points.length; i++){
-			for(var j=i+1; j<points.length;j++){
-				var nd0 = points[i];
-				var nd1 = points[j];
-				var dx = nd0.x - nd1.x;
-				var dy = nd0.y - nd1.y;
-				var dist = Math.sqrt(dy,dx);
-				var rad = Math.atan2(dy,dx);
-				if(dist>1){
-					nd0.fx += Math.cos(rad) / dist * forceAmp;
-					nd0.fy += Math.sin(rad) / dist * forceAmp;
-					nd1.fx -= Math.cos(rad) / dist * forceAmp;
-					nd1.fy -= Math.sin(rad) / dist * forceAmp;
-				}
-			}
-		}*/
+
 	}
 
 
@@ -126,17 +108,6 @@ var timeCnt = 0;
 		createNode();
 		for(var i=0; i<points.length; i++){
 			var nd = points[i];
-			
-			/*
-			nd.fx += Math.random()-0.5;
-			nd.fy += Math.random()-0.5;
-			nd.fx *= 0.99;
-			nd.fy *= 0.99;
-			
-			nd.vx += nd.fx;
-			nd.vy += nd.fy;
-			nd.vx*= nd.friction;
-			nd.vy*= nd.friction;*/
 			
 			nd.x += nd.vx;
 			nd.y += nd.vy;
@@ -189,29 +160,6 @@ var timeCnt = 0;
 
 
 	function createNode(){	
-	/*
-		if(points.length<maxNodeNum){
-			var pt = new Node(view.size.width*0.5, view.size.height*0.5);
-			var rad = Math.random()*360*Math.PI/180.0
-			pt.x += Math.cos(rad)*10;
-			pt.y += Math.sin(rad)*10;
-			points.push(pt);
-		}
-		
-		//If Outside of Screen Delete it
-		for(var i=points.length-1; i>-1; i--){
-			var nd = points[i];
-			if(nd.x<0-200 || nd.y<0-200 || nd.x>view.size.width+200 || nd.y>view.size.height+200){
-				points.splice(i,1);
-			}
-		}
-		
-		
-		//If Too mouch Delete it
-		if(points.length>maxNodeNum*2){
-			points.splice(0,1);
-			points.splice(0,1);
-		}*/
 	}
 	
 	
@@ -227,7 +175,7 @@ var timeCnt = 0;
 		var g = Math.random()*r;
 		var b = Math.random()*g;
 
-
+		//background(colours[hex]);
 		var col = new Color(r,g,b);
 		col.hue = baseHue;
 		col.saturation = 0.1;

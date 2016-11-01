@@ -32,6 +32,16 @@ MoireLayer.prototype.update = function() {
 };
 var layers = [];
 
+
+
+var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7', '#ffffff'];
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+var hex;
+
 function setup() {
     //black background
     var rect = new Path.Rectangle({
@@ -42,7 +52,7 @@ function setup() {
     });
 
     rect.sendToBack();
-    rect.fillColor = '#000000';
+    rect.fillColor = colours[randomIntFromInterval(0, (colours.length - 1))];
 
     for (var b = 0; b < 5; b++) {
         var a = new MoireLayer();
