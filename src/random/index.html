@@ -46,7 +46,6 @@
 
 					$(iframeContainerID).hide();
 					$(iframeID).attr("src", src).ready(function(){
-						//$(iframeContainerID).
 						
 						$(iframeContainerID).delay(100).fadeTo(fadeInDuration,1.0, function(){
 							isTransitioning = false;				
@@ -65,32 +64,17 @@
 			iframe.src = urls[currentSrc];
 			
 			window.setInterval(function() {
-				var index = getIndex();
-				if (index === currentSrc) {
-					getIndex();
-				} else {
-					currentSrc = index;
+				do {
+				    var index = getIndex();
+				    console.log(index);
 				}
+				while (index === currentSrc);
 
 				var src = urls[index];
 				changeSrc(src);
 
 			}, 10000);
 			
-			//Select first item
-			function loadItemAtIndex(index){
-				var item = $("#menu ul.sketch li a:eq(" + index + ")");
-				
-				$("#menu ul.sketch li a").removeClass("selected");
-				$(item).addClass("selected");
-				
-				var src = $(item).attr("href");
-				$(iframeID).attr("src", src).ready(function(){
-					$(iframeContainerID).fadeTo(fadeInDuration,1.0, function(){
-							isTransitioning = false;				
-					});
-				});
-			}
 		}
 
 	  window.onload = function() {
