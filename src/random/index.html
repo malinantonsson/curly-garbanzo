@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <title>fladdict</title>
 <link rel="stylesheet" href="assets/style.css">
+<script type="text/javascript" src="assets/jquery.min.js"></script>
 
 <script type="text/javascript">
 	(function (window, document) {
@@ -33,28 +34,26 @@
 			var iframe = document.querySelector('#sketchContainer');
 
 			var changeSrc = function changeSrc(src) {
+
 				if(isTransitioning){
 					return false;
 				}
-				//isTransitioning = true;
-				
-				//$(this).addClass("selected");
-				
-				//Load Content
-				//var target = this;
-				//$(iframeContainerID).fadeTo(fadeOutDuration,0.0,function(){
-					var src = src;
-					//$(iframeContainerID).hide();
-					iframe.src = src;
-					//.onload(function(){
+				isTransitioning = true;
+				console.log(src);
+				var src = src;
+
+				$(iframeContainerID).fadeTo(fadeOutDuration,0.0,function(){
+
+					$(iframeContainerID).hide();
+					$(iframeID).attr("src", src).ready(function(){
 						//$(iframeContainerID).
 						
-						//$(iframeContainerID).delay(100).fadeTo(fadeInDuration,1.0, function(){
-							//isTransitioning = false;				
-						//});
-					//});
+						$(iframeContainerID).delay(100).fadeTo(fadeInDuration,1.0, function(){
+							isTransitioning = false;				
+						});
+					});
 					
-				//});
+				});
 				return false;
 			}
 
@@ -77,46 +76,6 @@
 				changeSrc(src);
 
 			}, 10000);
-
-
-
-			
-			/*$("#menu ul.sketch li a").click(function(e){
-				
-				if(isTransitioning){
-					return false;
-				}
-				isTransitioning = true;
-				
-				$(this).addClass("selected");
-				
-				//Load Content
-				var target = this;
-				$(iframeContainerID).fadeTo(fadeOutDuration,0.0,function(){
-					var src = $(target).attr("href");
-					$(iframeContainerID).hide();
-					$(iframeID).attr("src", src).ready(function(){
-						//$(iframeContainerID).
-						
-						$(iframeContainerID).delay(100).fadeTo(fadeInDuration,1.0, function(){
-							isTransitioning = false;				
-						});
-					});
-					
-				});
-				return false;
-			})*/
-			//Setup menu
-			
-			function setup(){
-				/*
-				if (navigator.userAgent.indexOf('iPhone') > 0 || navigator.userAgent.indexOf('iPad') > 0 || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0) {
-					//This is smart phone
-				}else{
-					loadItemAtIndex(0);
-				}*/
-				//loadItemAtIndex(0);
-			}
 			
 			//Select first item
 			function loadItemAtIndex(index){
@@ -133,12 +92,6 @@
 				});
 			}
 		}
-		
-		
-		
-		
-		
-	//});
 
 	  window.onload = function() {
 		setup();
