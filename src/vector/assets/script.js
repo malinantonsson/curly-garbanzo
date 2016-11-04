@@ -1,3 +1,11 @@
+var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7', '#ffffff'];
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+var background;
+
 var Node = function(j, d) {
     var e = [this.createTriangle];
     this.tPosition = j;
@@ -57,10 +65,18 @@ var hue = Math.random() * 360;
 var sat;
 var satMode;
 var baseScale;
+var rect = new Path.Rectangle({
+    point: [0, 0],
+    size: [view.size.width, view.size.height],
+    strokeColor: '#000',
+    selected: true
+});
 
 function setup() {
     initialSize = 0;
+    rect.sendToBack();
     reset()
+    
 }
 
 function prepare() {
@@ -84,6 +100,9 @@ function prepare() {
 function reset() {
     removeAllNodes();
     prepare();
+
+    background = colours[randomIntFromInterval(0, (colours.length - 1))];
+    rect.fillColor = background;
 }
 
 function removeAllNodes() {
