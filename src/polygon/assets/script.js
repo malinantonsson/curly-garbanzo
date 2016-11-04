@@ -20,10 +20,22 @@ function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
 }
 
-var hex;
+var background;
 
 
 function setup() {
+    // background
+    var rect = new Path.Rectangle({
+        point: [0, 0],
+        size: [view.size.width, view.size.height],
+        strokeColor: '#000',
+        selected: true
+    });
+
+    rect.sendToBack();
+    background = colours[randomIntFromInterval(0, (colours.length - 1))];
+    rect.fillColor = background;
+
     springManager = new GLDSpringManager();
     countBeacon = new GLDCountBeacon(5, beacon);
     var a = new Path.RegularPolygon(0,0, 3, 1);
@@ -33,7 +45,13 @@ function setup() {
     
     a = new Path.RegularPolygon(0,0, 3, 1);
     //a = new Path.Circle(new Point(0, 0), 1);
-    a.fillColor = colours[randomIntFromInterval(0, (colours.length - 1))];
+
+    do {
+        var fill = colours[randomIntFromInterval(0, (colours.length - 1))];
+    }
+    while (fill === background);
+
+    a.fillColor = fill;
     dotRedSymbol = new Symbol(a);
     linesGroup = new Group();
     dotsGroup = new Group();
@@ -117,7 +135,7 @@ function onFrame(b) {
         lines[a].update()
     }
     var c = new Date().getTime();
-    if (c - d > 100 && isKillAll == false) {
+    if (c - d > 75 && isKillAll == false) {
         killAll()
     }
     if (killedCount == dots.length && dots.length > 1) {
@@ -355,7 +373,8 @@ Line.prototype.update = function() {
     }
     if (this.dot0.path && this.dot1.path) {
         this.path = new Path.Line(this.dot0.path.position, this.dot1.path.position);
-        this.path.strokeColor = new Color(0.85, 0.85, 0.85);
+        this.path.strokeColor = new Color(0.5, 0.5, 0.5);
+        //this.path.strokeColor = new Color(0.85, 0.85, 0.85);
         this.path.closed = false;
         linesGroup.addChild(this.path);
         if (this.killFlag) {
