@@ -54,6 +54,18 @@ var timeCnt = 0;
 	
 	function setup(){
 		voronoi = new Voronoi();
+
+		//black background
+	    var rect = new Path.Rectangle({
+	        point: [0, 0],
+	        size: [view.size.width, view.size.height],
+	        strokeColor: '#fff',
+	        selected: true
+	    });
+
+	    rect.sendToBack();
+	    rect.fillColor = '#fff';
+
 		reset();
 	}
 	
