@@ -18,7 +18,7 @@
 
 			var urls = [
 				'/triangulate/',
-				'/dotparaide/',
+				//'/dotparaide/',
 				'/voronoi/',
 				'/frequency/',
 				'/polygon/',
@@ -60,6 +60,8 @@
 
 			var currentSrc = getIndex();
 			iframe.src = urls[currentSrc];
+
+			var time = randomIntFromInterval(120000, 180000);
 			
 			window.setInterval(function() {
 				do {
@@ -68,10 +70,14 @@
 				while (index === currentSrc);
 				currentSrc = index;
 
+				time = randomIntFromInterval(120000, 180000);
+				console.log(time);
+
+
 				var src = urls[index];
 				changeSrc(src);
 
-			}, 10000);
+			}, time);
 			
 		}
 
