@@ -12,12 +12,18 @@ var Node = function(j, d) {
     this.position = j;
     this.path = e[Math.floor(Math.random() * e.length)]();
     this.path.position = j;
-    var i = Math.random() * 1;
+    /*var i = Math.random() * 1;
     var a = Math.random() * i;
     var h = Math.random() * h;
     var f = new Color(i, h, a);
-    f.hue += hue;
-    this.path.fillColor = f
+    f.hue += hue;*/
+    do {
+        var fill = colours[randomIntFromInterval(0, (colours.length - 1))];
+    }
+    while (fill === background);
+
+    
+    this.path.fillColor = fill;
 };
 Node.prototype.setupAnimation = function() {
     this.path.opacity = 0;
@@ -56,7 +62,7 @@ var nodes = [];
 var c = 1.2;
 var a0;
 var r0;
-var maxNodeNum = 4000;
+var maxNodeNum = 2000;
 var initialSize;
 var baseR;
 var cnt = 0;
@@ -131,6 +137,8 @@ function onFrame(e) {
                 break
             }
         }
+    } else {
+        reset();
     }
 }
 
