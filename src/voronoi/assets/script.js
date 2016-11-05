@@ -10,7 +10,7 @@ var timeCnt = 0;
 	var maxNumRad = 0;
 	var maxNumRadV = 0.001;
 	
-	var baseHue = 0;
+	//var baseHue = 0;
 	
 	var voronoi;	//Voronoi Generator
 	var points;		//Series of Points
@@ -21,8 +21,29 @@ var timeCnt = 0;
 	var mouseX;
 	var mouseY;
 
-
-	var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7', '#ffffff'];
+	var rgb = [
+		{
+			r: 0.447,
+			g: 0.76,
+			b: 0.678
+		},
+		{
+			r: 0.529,
+			g: 0.78,
+			b: 0.63
+		},
+		{
+			r: 0.627,
+			g: 0.803,
+			b: 0.56
+		},
+		{
+			r: 0.713,
+			g: 0.827,
+			b: 0.482
+		}
+	]
+	var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7'];
 
 	function randomIntFromInterval(min,max) {
 	    return Math.floor(Math.random()*(max-min+1)+min);
@@ -38,7 +59,7 @@ var timeCnt = 0;
 	
 	function reset(){
 		timeCnt = 0;
-		baseHue += 20 + Math.random()*120;
+		//baseHue += 20 + Math.random()*120;
 		if(Math.random()<0.3){
 			maxNodeNum = Math.random()* 5+1;
 		}else if(Math.random()<0.5){
@@ -62,7 +83,6 @@ var timeCnt = 0;
 			points.push(pt);
 		}
 		diagram = voronoi.compute(points, boundingBox);
-		//console.log(diagram);
 	}
 	
 	
@@ -148,7 +168,9 @@ var timeCnt = 0;
 			var cellPath = new Path();
 			cellPath.closed = true;
 			cellPath.fillColor = cell.site.color;
-			cellPath.strokeColor = cell.site.color;
+			cellPath.fillColor.alpha = cell.site.alpha;
+			//cellPath.strokeColor = cell.site.color;
+			//cellPath.strokeColor.alpha = cell.site.alpha;
 			var halfEdges = cell.halfedges;
 			for(j=0; j<halfEdges.length; j++){
 				var pt = halfEdges[j].getEndpoint();
@@ -171,15 +193,16 @@ var timeCnt = 0;
 		this.fx = 0;
 		this.fy = 0;
 		this.friction = frictionAmp;
-		var r = Math.random()*1;
+		/*var r = Math.random()*1;
 		var g = Math.random()*r;
-		var b = Math.random()*g;
+		var b = Math.random()*g;*/
 
-		//background(colours[hex]);
-		var col = new Color(r,g,b);
-		col.hue = baseHue;
-		col.saturation = 0.1;
-		this.color = col;
+		var i = randomIntFromInterval(0, (colours.length -1));
+		//var col = new Color(r, g, b );
+		//col.hue = baseHue;
+		this.alpha = Math.random();
+		//this.color = col;
+		this.color = colours[i];
 	}
 	
 	Node.prototype.update = function(){
