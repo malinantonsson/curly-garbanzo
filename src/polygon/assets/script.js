@@ -345,7 +345,7 @@ Dot.prototype.update = function() {
             }
         }
     }
-    this.scalingF = (this.tscaling - this.scaling) * 0.05;
+    this.scalingF = (this.tscaling - this.scaling) * 0.009;
     this.scalingV += this.scalingF;
     this.scalingV *= 0.8;
     this.scaling += this.scalingV;
