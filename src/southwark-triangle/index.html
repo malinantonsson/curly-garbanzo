@@ -1,8 +1,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>PARADE</title>
-<link rel="stylesheet" href="./assets/style.css">
+<title>Southwark triangle</title>
+<style type="text/css">
+	*{
+		font-family:Arial, Helvetica, sans-serif;
+		text-indent:0px;
+		margin:0px;
+		padding:0px;
+		color:#0;
+	}
+
+	body{
+		width:100%;
+		height:100%;
+	}
+
+	#canvas{
+		position: absolute;
+		left:     0px;
+	    top:      0px;
+		width:100%;
+		height:100%;
+	}
+</style>
 <script language="javascript" src="./assets/pixi.min.js"></script>
 <script language="javascript" src="./assets/perlin.js"></script>
 
@@ -21,6 +42,15 @@ var triW = (34.641 * 2) * scale;
 var triH = 60 * scale;
 var dots;
 var time;
+
+var colours = ['0x72c2ad', '0x87c7a3', '0xa0cd8f', '0xb6d37b', '0xc5d76a', '0xc5d76a', '0xefefee', '0xd9d9d6', '0x27347b', '0x2260ab', '0x298dcc', '0x52aedd', '0x7ccdf3', '0x7ccdf3', '0xe8d3e7', '0xe8d3e7'];
+
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+var hex;
 
 
 function reset(){
@@ -46,7 +76,7 @@ function animate(){
 	graphics.clear();
 
 	
-	time += 0.015;
+	time += 0.007;
 	if(time>3){
 		time = 0;
 	}
@@ -101,8 +131,8 @@ Dot.prototype.draw = function(){
 	offsetY2 -= Math.sin(rad2) * 80 * this.loop;
 	
 	this.radius = Math.sin(distRad)*4+8;
-	
-	graphics.beginFill(0x00a0e9, 1);
+
+	graphics.beginFill(fill1, 1);
 	//graphics.drawCircle(this.x + offsetX0, this.y + offsetY0, this.radius);
 
 	graphics.moveTo(this.x + offsetX0,this.y + offsetY0); //top point
@@ -111,7 +141,7 @@ Dot.prototype.draw = function(){
 
 	graphics.endFill();
 	
-	graphics.beginFill(0xe4007f, 1);
+	graphics.beginFill(fill2, 1);
 	//graphics.drawCircle(this.x + offsetX1, this.y + offsetY1, this.radius);
 	
 	graphics.moveTo(this.x + offsetX1,this.y + offsetY1);
@@ -120,7 +150,7 @@ Dot.prototype.draw = function(){
 
 	graphics.endFill();
 	
-	graphics.beginFill(0xfff100, 1);
+	graphics.beginFill(fill3, 1);
 	//graphics.drawCircle(this.x + offsetX2, this.y + offsetY2, this.radius);
 	
 
@@ -140,6 +170,7 @@ var renderer;
 var stage;
 var graphics;
 var background;
+var fill1, fill2, fill3;
 var width;
 var height;
 
@@ -151,16 +182,37 @@ document.onmousedown = function(){
 	reset();
 }
 
+var backgroundFill;
 function resize(){
 	width = window.innerWidth;
 	height = window.innerHeight;
 	renderer.view.style.width = width + "px";
 	renderer.view.style.height = height + "px";
 	renderer.resize(width,height);
+
+	var i = randomIntFromInterval(0, (colours.length -1));
+	backgroundFill = colours[i];
 	
-	background.beginFill(0xffffff,1);
+	background.beginFill(colours[i],1);
 	background.drawRect(0,0,width,height);
 	background.endFill();
+
+	
+
+	do {
+        fill1 = colours[randomIntFromInterval(0, (colours.length - 1))];
+    }
+    while (fill1 === backgroundFill);
+
+    do {
+        fill2 = colours[randomIntFromInterval(0, (colours.length - 1))];
+    }
+    while ((fill2 === backgroundFill) || (fill2 === fill1));
+
+    do {
+        fill3 = colours[randomIntFromInterval(0, (colours.length - 1))];
+    }
+    while ((fill3 === backgroundFill) || (fill3 === fill1) || (fill3 === fill2));
 }
 
 function init(){
