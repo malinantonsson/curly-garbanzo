@@ -5,7 +5,7 @@ var MoireLayer = function() {
 MoireLayer.prototype.setup = function() {
     this.group = new Group();
     this.speedRad = 0;
-    this.speedRadDelta = Math.random() * 0.00000001 + 0.0000001;
+    this.speedRadDelta = Math.random() * 0.0000000000001 + 0.0000000000001;
     this.speedAmp = Math.random() * 2;
     this.scaleRad = 0;
     this.scaleRadDelta = Math.random() * 0.0001 + 0.0001;
@@ -56,7 +56,7 @@ function setup() {
 
     for (var b = 0; b < 5; b++) {
         var a = new MoireLayer();
-        a.rotationVelocity = (Math.random() - 0.5) * 0.1;
+        a.rotationVelocity = (Math.random() - 0.5) * 0.05;
         layers.push(a)
     }
 }
