@@ -88,7 +88,7 @@ var timeCnt = 0;
 		
 		for(var i=0; i<maxNodeNum; i++){
 			var pt = new Node(Math.random()*view.size.width, Math.random()*view.size.height);
-			var v = Math.random()*.5; //used to be 3
+			var v = Math.random()*.2; //used to be 3
 			var rad = Math.random()*360*Math.PI/180;
 			pt.vx = Math.cos(rad)*v;
 			pt.vy = Math.sin(rad)*v;
