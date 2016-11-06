@@ -28,7 +28,7 @@ var Node = function(j, d) {
 Node.prototype.setupAnimation = function() {
     this.path.opacity = 0;
     this.copy = this.path.clone();
-    this.scaling = 0.1;
+    this.scaling = 0.01;
     this.copy.scaling = this.scaling;
 
     this.copy.opacity = 1;
@@ -44,7 +44,7 @@ Node.prototype.createTriangle = function() {
 };
 
 Node.prototype.update = function() {
-    this.scaling = this.scaling + (1 - this.scaling) * 0.02;
+    this.scaling = this.scaling + (1 - this.scaling) * 0.008;
     this.copy.scaling = this.scaling;
 
 };
