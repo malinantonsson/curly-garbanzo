@@ -14,7 +14,10 @@ var draggingNode;
 var draggingSpring;
 var nearestNode;
 
-var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7'];
+var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#ffffff'];
+var strokeFills = ['#27347b', '#2260ab', '#298dcc'];
+var hex = randomIntFromInterval(0, (colours.length - 1));
+hex = 15;
 
 function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
@@ -30,17 +33,25 @@ var rect = new Path.Rectangle({
 
 rect.sendToBack();
 
+var secondColor;
+if ((hex === 6) || (hex === 14) || (hex === 15)){ //avoid light stroke on light background
+    secondColor = strokeFills[randomIntFromInterval(0, (strokeFills.length - 1))];
+} 
+else {
+    secondColor = '#ffffff';
+}
+
 function setup() {
     // background
     
-    background = colours[randomIntFromInterval(0, (colours.length - 1))];
+    background = colours[hex];
     rect.fillColor = background;
 
     springManager = new GLDSpringManager();
     countBeacon = new GLDCountBeacon(5, beacon);
     var a = new Path.RegularPolygon(0,0, 3, 1);
     //var a = new Path.Circle(new Point(0, 0), 1);
-    a.fillColor = "white";
+    a.fillColor = secondColor;
     dotSymbol = new Symbol(a);
     
     a = new Path.RegularPolygon(0,0, 3, 1);
@@ -49,7 +60,7 @@ function setup() {
     do {
         var fill = colours[randomIntFromInterval(0, (colours.length - 1))];
     }
-    while (fill === background);
+    while ((fill === background) || (fill === secondColor ));
 
     a.fillColor = fill;
     dotRedSymbol = new Symbol(a);
@@ -372,7 +383,7 @@ Line.prototype.update = function() {
     }
     if (this.dot0.path && this.dot1.path) {
         this.path = new Path.Line(this.dot0.path.position, this.dot1.path.position);
-        this.path.strokeColor = new Color(1, 1, 1);
+        this.path.strokeColor = secondColor;
         //this.path.strokeColor = new Color(0.85, 0.85, 0.85);
         this.path.closed = false;
         linesGroup.addChild(this.path);
