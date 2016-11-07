@@ -185,4 +185,8 @@ function onMouseDown() {
 function onResize(a) {
     reset()
 }
+
+window.setInterval(function() { // reset every 60s
+    reset();
+}, 60000);
 setup();
