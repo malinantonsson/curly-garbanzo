@@ -73,12 +73,13 @@ var timeCnt = 0;
 		timeCnt = 0;
 		//baseHue += 20 + Math.random()*120;
 		if(Math.random()<0.3){
-			maxNodeNum = Math.random()* 5+1;
+			maxNodeNum = Math.random()* 5 + 2;
 		}else if(Math.random()<0.5){
 			maxNodeNum = Math.random()* 10+10;
 		}else{
 			maxNodeNum = Math.random()* 20+40;
 		}
+
 		forceAmp = (Math.random()<0.8)? Math.random()*3 + 0.05 : Math.random()*-10-5;
 		frictionAmp = Math.random()*0.4 + 0.5;
 		
