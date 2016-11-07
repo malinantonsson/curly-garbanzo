@@ -1,3 +1,20 @@
+var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#ffffff'];
+var strokeFills = ['#27347b', '#2260ab', '#298dcc'];
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+var hex = randomIntFromInterval(0, (colours.length - 1));
+//hex = 15;
+
+if ((hex === 6) || (hex === 14) || (hex === 15)){ //avoid light stroke on light background
+    fill = strokeFills[randomIntFromInterval(0, (strokeFills.length - 1))];
+} 
+else {
+    fill = '#ffffff';
+}
+
 var MoireLayer = function() {
     this.rotationVelocity = 0;
     this.setup()
@@ -13,7 +30,8 @@ MoireLayer.prototype.setup = function() {
     var a = Math.random() * 100 + 4;
     for (var b = 0; b < 200; b++) {
         var c = new Path.Line(new Point(0, b * a), new Point(4000, b * a));
-        c.strokeColor = new Color(1, 1, 1);
+
+        c.strokeColor = fill;
         this.group.addChild(c)
     }
 };
@@ -33,15 +51,6 @@ MoireLayer.prototype.update = function() {
 var layers = [];
 
 
-
-var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7', '#ffffff'];
-
-function randomIntFromInterval(min,max) {
-    return Math.floor(Math.random()*(max-min+1)+min);
-}
-
-var hex;
-
 function setup() {
     //black background
     var rect = new Path.Rectangle({
@@ -52,7 +61,7 @@ function setup() {
     });
 
     rect.sendToBack();
-    rect.fillColor = colours[randomIntFromInterval(0, (colours.length - 1))];
+    rect.fillColor = colours[hex];
 
     for (var b = 0; b < 5; b++) {
         var a = new MoireLayer();
