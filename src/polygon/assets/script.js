@@ -21,18 +21,18 @@ function randomIntFromInterval(min,max) {
 }
 
 var background;
+var rect = new Path.Rectangle({
+    point: [0, 0],
+    size: [view.size.width, view.size.height],
+    strokeColor: '#000',
+    selected: true
+});
 
+rect.sendToBack();
 
 function setup() {
     // background
-    var rect = new Path.Rectangle({
-        point: [0, 0],
-        size: [view.size.width, view.size.height],
-        strokeColor: '#000',
-        selected: true
-    });
-
-    rect.sendToBack();
+    
     background = colours[randomIntFromInterval(0, (colours.length - 1))];
     rect.fillColor = background;
 
@@ -101,7 +101,6 @@ function onMouseDown(a) {
     draggingNode = new GLDSpringNode(a.point.x, a.point.y);
     draggingNode.isFixed = true;
     springManager.addNode(draggingNode);
-    console.log(nearestNode, draggingNode);
     draggingSpring = new GLDSpring(draggingNode, nearestNode, 0);
     springManager.addSpring(draggingSpring)
 }
@@ -139,8 +138,8 @@ function onFrame(b) {
         killAll()
     }
     if (killedCount == dots.length && dots.length > 1) {
+        //reset();
         setup();
-        //reset()
     }
 }
 
@@ -232,7 +231,7 @@ function killAll() {
 
 function removeDot(c) {
     reset();
-    console.log("kill");
+
     return;
     var f = objectIndexForArray(c, dots);
     var b = [];
@@ -345,7 +344,7 @@ Dot.prototype.update = function() {
             }
         }
     }
-    this.scalingF = (this.tscaling - this.scaling) * 0.009;
+    this.scalingF = (this.tscaling - this.scaling) * 0.05;
     this.scalingV += this.scalingF;
     this.scalingV *= 0.8;
     this.scaling += this.scalingV;
