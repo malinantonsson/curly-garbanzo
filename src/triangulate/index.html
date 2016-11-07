@@ -48,6 +48,8 @@ ArrayList rectSets;
 
 var colours = [#72c2ad, #87c7a3, #a0cd8f, #b6d37b, #c5d76a, #c5d76a, #efefee, #d9d9d6, #27347b, #2260ab, #298dcc, #52aedd, #7ccdf3, #7ccdf3, #e8d3e7, #ffffff];
 
+var strokeFills = [#27347b, #2260ab, #298dcc];
+
 function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
 }
@@ -73,9 +75,9 @@ void reset(){
   //hex = 15;
 
   if ((hex === 6) || (hex === 14) || (hex === 15)){ //avoid light stroke on light background
-    stroke(#27347b);
+    fill = randomIntFromInterval(0, (strokeFills.length - 1));
+    stroke(strokeFills[fill]);
   } 
-
   else {
     stroke(255, 255, 255);
   }
