@@ -51,7 +51,7 @@
 				$(iframeContainerID).fadeTo(fadeOutDuration,0.0,function(){
 
 					$(iframeContainerID).hide();
-					$(iframeID).attr("src", baseUrl + urls[4] + delay).ready(function(){
+					$(iframeID).attr("src", baseUrl + urls[src] + delay).ready(function(){
 						
 						$(iframeContainerID).delay(100).fadeTo(fadeInDuration,1.0, function(){
 							isTransitioning = false;

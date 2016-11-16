@@ -386,7 +386,6 @@ Line.prototype.update = function() {
     }
 };
 Line.prototype.teardown = function() {
-    console.log("teardown");
     this.path.remove()
 };
 

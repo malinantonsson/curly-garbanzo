@@ -5,6 +5,7 @@ function randomIntFromInterval(min,max) {
 }
 
 var background;
+var started = false;
 
 var Node = function(j, d) {
     var e = [this.createTriangle];
@@ -79,6 +80,7 @@ var rect = new Path.Rectangle({
 });
 
 function setup() {
+    started = true;
     initialSize = 0;
     rect.sendToBack();
     reset()
@@ -119,6 +121,7 @@ function removeAllNodes() {
 }
 
 function onFrame(e) {
+    if(!started) return;
     for (var d = 0; d < nodes.length; d++) {
         nodes[d].update()
     }
@@ -189,4 +192,20 @@ function onResize(a) {
 window.setInterval(function() { // reset every 60s
     reset();
 }, 60000);
-setup();
+//setup();
+
+function getParamValue(paramName) {
+    var url = window.location.search.substring(1); //get rid of "?" in querystring
+    var qArray = url.split('&'); //get key-value pairs
+    for (var i = 0; i < qArray.length; i++) 
+    {
+        var pArr = qArray[i].split('='); //split key and value
+        if (pArr[0] == paramName) 
+            return pArr[1]; //return value
+    }
+}
+var time = getParamValue('time');
+
+window.setTimeout(function(){
+    setup();
+}, time);
