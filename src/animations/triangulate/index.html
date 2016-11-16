@@ -55,6 +55,7 @@ function randomIntFromInterval(min,max) {
 }
 
 var hex;
+var started = false;
 
 
 void setup(){
@@ -68,6 +69,8 @@ void setup(){
 }
 
 void reset(){
+  if(!started) return;
+
   noFill();
 
   background(0);
@@ -142,6 +145,7 @@ void mousePressed(){
 }
 
 void draw(){
+  if(!started) return;
   background(colours[hex]);
   
   //noFill();
@@ -266,6 +270,23 @@ class Rectangle{
   float rotZ2, rotVz2;
   int cnt = 0; 
 }
+
+function getParamValue(paramName) {
+    var url = window.location.search.substring(1); //get rid of "?" in querystring
+    var qArray = url.split('&'); //get key-value pairs
+    for (var i = 0; i < qArray.length; i++) 
+    {
+        var pArr = qArray[i].split('='); //split key and value
+        if (pArr[0] == paramName) 
+            return pArr[1]; //return value
+    }
+}
+var time = getParamValue('time');
+
+window.setTimeout(function(){
+  started = true;
+  reset();
+}, time);
 </script>
 <style type="text/css">@font-face {
   font-family: "PjsEmptyFont";
