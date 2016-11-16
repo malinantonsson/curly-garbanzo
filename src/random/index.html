@@ -94,10 +94,13 @@
 				transitions.iframeContainer = iframe;
 			},
 			show: function(){
-				var src = getIndex(transitions.src)
-				transitions.currentSrc = src;
+				do {
+				    var index = getIndex(transitions.src);
+				}
+				while (index === transitions.currentSrc);
+				transitions.currentSrc = index;
 
-				transitions.iframeContainer.src = transitions.baseUrl + transitions.src[src] + '?time=3000';
+				transitions.iframeContainer.src = transitions.baseUrl + transitions.src[index];
 			},
 
 			hide: function(){
