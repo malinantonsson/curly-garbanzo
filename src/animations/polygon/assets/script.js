@@ -15,7 +15,7 @@ var draggingSpring;
 var nearestNode;
 
 var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7'];
-
+var started = false;
 function randomIntFromInterval(min,max) {
     return Math.floor(Math.random()*(max-min+1)+min);
 }
@@ -31,6 +31,7 @@ var rect = new Path.Rectangle({
 rect.sendToBack();
 
 function setup() {
+    started = true;
     // background
     
     background = colours[randomIntFromInterval(0, (colours.length - 1))];
@@ -59,6 +60,7 @@ function setup() {
 }
 
 function reset() {
+    if(!started) return;
     removeAll();
     countBeacon.reset();
     killedCount = 0;
@@ -123,6 +125,8 @@ function onMouseDrag(a) {
 }
 
 function onFrame(b) {
+    if(!started) return;
+
     var d = new Date().getTime();
     countBeacon.update();
     compulsion();
@@ -385,4 +389,20 @@ Line.prototype.teardown = function() {
     console.log("teardown");
     this.path.remove()
 };
-setup();
+
+function getParamValue(paramName) {
+    var url = window.location.search.substring(1); //get rid of "?" in querystring
+    var qArray = url.split('&'); //get key-value pairs
+    for (var i = 0; i < qArray.length; i++) 
+    {
+        var pArr = qArray[i].split('='); //split key and value
+        if (pArr[0] == paramName) 
+            return pArr[1]; //return value
+    }
+}
+var time = getParamValue('time');
+
+window.setTimeout(function(){
+    setup();
+}, time);
+

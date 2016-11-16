@@ -25,6 +25,8 @@
 			var fadeInDuration = 400;
 			var baseUrl = '/animations';
 
+			var delay = '?time=3000';
+
 			var urls = [
 				'/triangulate/',
 				'/southwark-triangle/',
@@ -33,8 +35,6 @@
 				'/polygon/',
 				'/vector/'
 			];
-
-			
 
 			var iframe = document.querySelector('#animationContainer');
 
@@ -51,7 +51,7 @@
 				$(iframeContainerID).fadeTo(fadeOutDuration,0.0,function(){
 
 					$(iframeContainerID).hide();
-					$(iframeID).attr("src", baseUrl + src).ready(function(){
+					$(iframeID).attr("src", baseUrl + urls[4] + delay).ready(function(){
 						
 						$(iframeContainerID).delay(100).fadeTo(fadeInDuration,1.0, function(){
 							isTransitioning = false;
@@ -67,7 +67,7 @@
 			iframe.src = baseUrl + urls[currentSrc];
 
 			var time = randomIntFromInterval(120000, 180000);
-			var time = 5000;
+			//var time = 10000;
 			
 			window.setInterval(function() {
 				do {
@@ -95,15 +95,17 @@
 				transitions.iframeContainer = iframe;
 			},
 			show: function(){
-				console.log('showing');
 				var src = getIndex(transitions.src)
 				transitions.currentSrc = src;
-				transitions.iframeContainer.src = transitions.baseUrl + transitions.src[src];
+
+				transitions.iframeContainer.src = transitions.baseUrl + transitions.src[src] + '?time=3000';
 			},
 
 			hide: function(){
-				console.log('hiding');
-				transitions.iframeContainer.src = '';
+				window.setTimeout(function(){
+					transitions.iframeContainer.src = '';
+				}, 3000);
+				
 			}
 		}
 
