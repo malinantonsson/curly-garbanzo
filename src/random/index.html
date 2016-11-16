@@ -9,12 +9,21 @@
 
 <script type="text/javascript">
 	(function (window, document) {
-		var setup = function setup() {
+		function randomIntFromInterval(min,max) {
+		    return Math.floor(Math.random()*(max-min+1)+min);
+		}
+
+		var getIndex = function getIndex(urls) {
+			return randomIntFromInterval(0, (urls.length - 1));
+		}
+
+		var setupAnimation = function setupAnimation() {
 			var iframeContainerID = "#iframeContainer";
-			var iframeID = "#sketchContainer";
+			var iframeID = "#animationContainer";
 			var isTransitioning = false;
 			var fadeOutDuration = 400;
 			var fadeInDuration = 400;
+			var baseUrl = '/animations';
 
 			var urls = [
 				'/triangulate/',
@@ -25,27 +34,28 @@
 				'/vector/'
 			];
 
-			function randomIntFromInterval(min,max) {
-			    return Math.floor(Math.random()*(max-min+1)+min);
-			}
+			
 
-			var iframe = document.querySelector('#sketchContainer');
+			var iframe = document.querySelector('#animationContainer');
 
 			var changeSrc = function changeSrc(src) {
 
 				if(isTransitioning){
 					return false;
 				}
+
 				isTransitioning = true;
+				transitions.show();
 				var src = src;
 
 				$(iframeContainerID).fadeTo(fadeOutDuration,0.0,function(){
 
 					$(iframeContainerID).hide();
-					$(iframeID).attr("src", src).ready(function(){
+					$(iframeID).attr("src", baseUrl + src).ready(function(){
 						
 						$(iframeContainerID).delay(100).fadeTo(fadeInDuration,1.0, function(){
-							isTransitioning = false;				
+							isTransitioning = false;
+							transitions.hide();				
 						});
 					});
 					
@@ -53,18 +63,15 @@
 				return false;
 			}
 
-			var getIndex = function getIndex() {
-				return randomIntFromInterval(0, (urls.length - 1));
-			}
-
-			var currentSrc = getIndex();
-			iframe.src = urls[currentSrc];
+			var currentSrc = getIndex(urls);
+			iframe.src = baseUrl + urls[currentSrc];
 
 			var time = randomIntFromInterval(120000, 180000);
+			var time = 5000;
 			
 			window.setInterval(function() {
 				do {
-				    var index = getIndex();
+				    var index = getIndex(urls);
 				}
 				while (index === currentSrc);
 				currentSrc = index;
@@ -78,17 +85,42 @@
 			
 		}
 
+		var transitions = {
+			src: [ '/particles/', '/transition/'],
+			currentSrc: '',
+			iframeContainer: '',
+			baseUrl: '/transitions',
+			init: function(){
+				var iframe = document.querySelector('#transitionContainer');
+				transitions.iframeContainer = iframe;
+			},
+			show: function(){
+				console.log('showing');
+				var src = getIndex(transitions.src)
+				transitions.currentSrc = src;
+				transitions.iframeContainer.src = transitions.baseUrl + transitions.src[src];
+			},
+
+			hide: function(){
+				console.log('hiding');
+				transitions.iframeContainer.src = '';
+			}
+		}
+
 	  window.onload = function() {
-		setup();
+		setupAnimation();
+		transitions.init();
 	  };
+
 	})(window, document);
 
 </script>
 </head>
 <body>
 <div id="iframeContainer">
-<iframe id="sketchContainer" src="#" scrolling="no" frameborder="0"></iframe>
+<iframe id="animationContainer" src="#" scrolling="no" frameborder="0"></iframe>
 </div>
+<iframe id="transitionContainer" src="#" scrolling="no" frameborder="0"></iframe>
 </div>
 </body>
 </html>
