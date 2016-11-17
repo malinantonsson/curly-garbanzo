@@ -7,13 +7,19 @@
 		root.bodymovin = factory(); 
 	} 
 }(window, function() {
+	var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7'];
+
+	function randomIntFromInterval(min,max) {
+	    return Math.floor(Math.random()*(max-min+1)+min);
+	}
+	var colourIndex = randomIntFromInterval(0, (colours.length -1));
+
 	function getRandomColor (){
-		//return "115,115,115";
-		return "#0000ff"
+		return colours[colourIndex];
 	}
 
 	var randomFillColor = getRandomColor();
-	console.log(randomFillColor);
+
 	function roundValues(t){
 		bm_rnd= t ? Math.round : function(t){return t}
 	}
