@@ -1,0 +1,87 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gradients</title>
+
+<style type="text/css">
+	body {
+		margin: 0;
+	}
+
+	.background {
+		position: absolute;
+	    top: 0;
+	    bottom: 0;
+	    width: 100%;
+
+		background: #fff;
+		background-size: 400% 400%;
+
+		-webkit-animation: gradientAnimation 20s ease infinite;
+		-moz-animation: gradientAnimation 20s ease infinite;
+		animation: gradientAnimation 20s ease infinite;
+	}
+
+	@-webkit-keyframes gradientAnimation {
+	    0%{background-position:0% 50%}
+	    50%{background-position:100% 50%}
+	    100%{background-position:0% 50%}
+	}
+	@-moz-keyframes gradientAnimation {
+	    0%{background-position:0% 50%}
+	    50%{background-position:100% 50%}
+	    100%{background-position:0% 50%}
+	}
+	@keyframes gradientAnimation { 
+	    0%{background-position:0% 50%}
+	    50%{background-position:100% 50%}
+	    100%{background-position:0% 50%}
+	}
+</style>
+
+<script type="text/javascript">
+	(function (window, document) {
+		var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7'];
+
+		
+
+		function randomIntFromInterval(min,max) {
+		    return Math.floor(Math.random()*(max-min+1)+min);
+		}
+
+		var getIndex = function getIndex(urls) {
+			return randomIntFromInterval(0, (urls.length - 1));
+		}
+
+		function init() {
+			var background = document.querySelector('.background');
+
+			//get 2 different values 
+			var index1 = randomIntFromInterval(0, colours.length - 1);
+			do {
+			    var index2 = randomIntFromInterval(0, colours.length - 1);
+			}
+			while (index2 === index1);
+
+			var colour1 = colours[index1];
+			var colour2 = colours[index2];
+
+			background.style.background = 'linear-gradient(270deg, ' + colour1 + ', ' + colour2 + ')';
+			background.style.backgroundSize = '400% 400%';
+		}
+	
+		window.onload = function() {
+			init();
+		};
+		
+
+	})(window, document);
+
+</script>
+</head>
+<body>
+<div class="background"></div>
+</body>
+</html>
