@@ -85,7 +85,7 @@
 			src: [ '/particles/', '/transition/', '/chevrons/', '/door/', '/door-2/', '/eq/', '/particles-2/', '/particles-3/', '/plus-1/', '/transition-2/', '/sine-wave/'],
 			currentSrc: '',
 			iframeContainer: '',
-			baseUrl: '../transitions',
+			baseUrl: '../../transitions',
 			init: function(){
 				var iframe = document.querySelector('#transitionContainer');
 				transitions.iframeContainer = iframe;
@@ -109,7 +109,7 @@
 			}
 		}
 	
-		window.onload = function(evt) {
+		window.onload = function() {
 			init();
 			transitions.init();
 		};

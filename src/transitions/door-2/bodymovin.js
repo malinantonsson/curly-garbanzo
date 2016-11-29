@@ -102,7 +102,6 @@
         return r
     }
     function HSVtoRGB(t, e, s) {
-    	console.log('HSVtoRGB');
         var r, i, a, n, o, h, l, p;
         switch (1 === arguments.length && (e = t.s,
         s = t.v,
@@ -146,7 +145,6 @@
         return [r, i, a]
     }
     function RGBtoHSV(t, e, s) {
-    	console.log(RGBtoHSV);
         1 === arguments.length && (e = t.g,
         s = t.b,
         t = t.r);
@@ -544,7 +542,6 @@
                 f = T.length;
                 var w, I, F = [];
                 for (m = 0; f > m; m += 1) {
-                	console.log('loop');
                     for (T[m].a.sc && (n.strokeColorAnim = !0),
                     T[m].a.sw && (n.strokeWidthAnim = !0),
                     (T[m].a.fc || T[m].a.fh || T[m].a.fs || T[m].a.fb) && (n.fillColorAnim = !0),
@@ -812,7 +809,6 @@
         this.filters = [];
         var n;
         for (e = 0; s > e; e += 1)
-        	console.log(SVGEffects);
             20 === t.data.ef[e].ty ? (a += 1,
             n = new SVGTintFilter(i,t.effects.effectElements[e]),
             this.filters.push(n)) : 21 === t.data.ef[e].ty ? (a += 1,
@@ -1275,7 +1271,6 @@
         }
     }()
       , fillColorToString = function() {
-      	console.log('helo');
         var t = [];
        /* return function(e, s) {
         	console.log(e, s);
@@ -4763,10 +4758,8 @@
     ,
     IShapeElement.prototype.renderFill = function(t, e) {
         var s = e.style;
-        console.log(e);
         var rgb;
         if(bm_floor(e.c.v[0]) === 0) {
-        	console.log('hola');
         	rgb = randomFillColor;
         } else{
         	rgb = randomFillColor2;
