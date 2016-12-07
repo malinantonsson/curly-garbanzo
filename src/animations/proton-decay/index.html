@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Proton Decay</title>
+<script language="javascript" src="./assets/processing-1.4.1.min.js"></script>
+
+<style type="text/css">
+  @charset "UTF-8";
+  /* CSS Document */
+
+  *{
+    font-family:Arial, Helvetica, sans-serif;
+    text-indent:0px;
+    margin:0px;
+    padding:0px;
+    color:#0;
+  }
+
+  body{
+    width:100%;
+    height:100%;
+  }
+
+  #canvas{
+    position: absolute;
+    left:     0px;
+      top:      0px;
+    width:100%;
+    height:100%;
+  }
+
+  #sketchContainer{
+    display: block;
+    width:100%;
+    height:100%;
+    left:     0px;
+    position: absolute;
+    top:      0px;
+  }
+</style>
+
+<script>
+window.onload = function(){
+	var canvas = document.getElementsByTagName("canvas")[0];
+	var codeElm = document.getElementById("processing-code");
+	var code = codeElm.textContent || codeElm.innerHText;
+	new Processing(canvas, code);
+}
+</script>
+
+<script id="processing-code" type="application/processing">
+
+void setup(){
+	size(window.innerWidth,window.innerHeight,P3D);
+  	noSmooth();
+	//For FullScreen
+	window.onresize = function()
+	{
+		size(window.innerWidth,window.innerHeight,P3D);
+		reset();
+	};
+	reset();
+}
+
+int areaSize = 10;
+int timeCount;
+ArrayList nodes;
+float rx, rvx, rfx;
+float ry, rvy, rfy;
+float rotationY;
+float rotationX;
+
+var colours = [#72c2ad, #87c7a3, #a0cd8f, #b6d37b, #c5d76a, #c5d76a, #efefee, #d9d9d6, #27347b, #2260ab, #298dcc, #52aedd, #7ccdf3, #7ccdf3, #e8d3e7, #ffffff];
+
+var strokeFills = [#27347b, #2260ab, #298dcc];
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+hex = randomIntFromInterval(0, (colours.length - 1));
+  //hex = 15;
+do {
+   var strokeColor = colours[randomIntFromInterval(0, (colours.length - 1))];
+}
+while (strokeColor === colours[hex]);
+
+
+
+void reset(){
+
+
+  timeCount = 0;
+
+  
+  nodes = new ArrayList();
+  for(int x=0; x<areaSize; x++){
+    for(int y=0; y<areaSize; y++){
+      for(int z=0; z<areaSize; z++){
+        Node n = new Node();
+        n.x = x;
+        n.y = y;
+        n.z = z;
+        nodes.add(n);
+      }
+    }
+  }
+}
+
+void draw(){
+  background(colours[hex]);
+  //background(255, 200, 100); 
+  
+  if(timeCount<300){
+    timeCount++;
+  }
+  
+  rfx += random(-0.00001,0.00001);
+  rfx *= 0.99;
+  rfy += random(-0.00001,0.00001);
+  rfy *= 0.99;
+  rvx += rfx;
+  rvx *= 0.99;
+  rvy += rfy;
+  rvy *= 0.99;
+  rx += rvx + 0.005;
+  ry += rvy + 0.005;
+  
+  rotationY += 0.005;
+  rotationX += 0.005;
+  
+  translate(width*0.5, height*0.5);
+  rotateY(rotationY);
+  rotateX(rotationX);
+  
+  float amp = timeCount * timeCount / 100000.0;
+  
+  lights();
+  
+
+  console.log(strokeColor);
+  stroke(strokeColor);
+  //stroke(0);
+ //background(255, 200, 100); 
+  fill(colours[hex]);
+  //background(colours[hex]);
+  //noFill();
+  for(int i=0; i<nodes.size(); i++){
+    Node n = (Node)nodes.get(i);
+    n.amplitude = amp;
+    n.update();
+    n.draw();
+  }
+}
+
+void mousePressed(){
+  reset();
+}
+
+class Node{
+  float x, vx, fx;
+  float y, vy, fy;
+  float z, vz, fz;
+  float rx, rvx, rfx;
+  float ry, rvy, rfy;
+  float nodeSize = 10;
+  float nodeSpace = 10;
+  float amplitude = 1;
+  float s = 1;
+  
+  void update(){
+    //Position Random Walk
+    fx += random(-0.001,0.001) * amplitude;
+    fx*=0.99;
+    fy += random(-0.001,0.001) * amplitude;
+    fy*=0.99;
+    fz += random(-0.001,0.001) * amplitude;
+    fz*=0.99;
+    vx += fx;
+    vx*=0.95;
+    vy += fy;
+    vy*=0.95;
+    vz += fz;
+    vz*=0.95;
+    x += vx;
+    y += vy;
+    z += vz;
+    
+    //Rotation Random Walk
+    rfx += random(-0.001,0.001) * amplitude;
+    rfy += random(-0.001,0.001) * amplitude;
+    rfx *= 0.99;
+    rfy *= 0.99;
+    rvx += rfx;
+    rvy += rfy;
+    rvx *= 0.95;
+    rvy *= 0.95;
+    rx += rvx;
+    ry += rvy;
+  }
+  
+  void draw(){
+    pushMatrix();
+    translate((x-5)*nodeSpace,(y-5)*nodeSpace,(z-5)*nodeSpace);
+    rotateX(rx);
+    rotateY(ry);
+    box(nodeSize,nodeSize,nodeSize);
+    popMatrix();
+  }
+}
+</script>
+
+<body>
+	<canvas id="canvas" tabindex="0" width="1280" height="635"></canvas>
+</body>
+</html>
