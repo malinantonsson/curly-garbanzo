@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://www.fladdict.net/sketches/supernova/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>SuperNova</title>
+<link rel="stylesheet" href="./assets/style.css">
+<script type="text/javascript" src="./assets/paper-full.min.js"></script><style>@media print {#ghostery-purple-box {display:none !important}}</style>
+<script type="text/javascript" src="./assets/rhill-voronoi-core.min.js"></script>
+<script type="text/paperscript" canvas="canvas" id="paperscope-1">
+var timeCnt = 0;
+var maxNodeNum;
+var forceAmp;
+var frictionAmp;
+var maxTimeCnt = 150;
+var maxNum = 0;
+var maxNumBase = 100;
+var maxNumAmp = 90;
+var maxNumRad = 0;
+var maxNumRadV = 0.001;
+var baseHue = 0;
+var voronoi;
+var points;
+var diagram;
+var margin;
+var boundingBox;
+var mouseX;
+var mouseY;
+
+function setup() {
+	voronoi = new Voronoi();
+	reset()
+}
+
+function reset() {
+	timeCnt = 0;
+	baseHue += 20 + Math.random() * 120;
+	maxNodeNum = Math.random() * 100 + 5;
+	forceAmp = (Math.random() < 0.8) ? Math.random() * 3 + 0.05 : Math.random() * -10 - 5;
+	frictionAmp = Math.random() * 0.6 + 0.5;
+	boundingBox = {
+		xl: 0,
+		xr: view.size.width,
+		yt: 0,
+		yb: view.size.height
+	};
+	points = [];
+	for (var a = 0; a < 1; a++) {
+		var b = new Node(Math.random() * view.size.width, Math.random() * view.size.height);
+		points.push(b)
+	}
+	diagram = voronoi.compute(points, boundingBox)
+}
+
+function onMouseDown(a) {
+	reset()
+}
+
+function onMouseUp(a) {}
+
+function onMouseMove(b) {
+	var a = b.point;
+	mouseX = a.x;
+	mouseY = a.y
+}
+
+function onFrame(a) {
+	timeCnt++;
+	if (timeCnt > maxTimeCnt) {
+		reset();
+		return
+	}
+	applyForce();
+	update();
+	draw()
+}
+
+function applyForce() {
+	for (var d = 0; d < points.length; d++) {
+		var b = points[d];
+		var k = b.x - mouseX;
+		var g = b.y - mouseY;
+		var e = Math.sqrt(g, k);
+		var f = Math.atan2(g, k);
+		if (e > 1) {
+			b.fx -= Math.cos(f) / e / e * 100;
+			b.fy -= Math.sin(f) / e / e * 100
+		}
+	}
+	for (var d = 0; d < points.length; d++) {
+		for (var c = d + 1; c < points.length; c++) {
+			var a = points[d];
+			var h = points[c];
+			var k = a.x - h.x;
+			var g = a.y - h.y;
+			var e = Math.sqrt(g, k);
+			var f = Math.atan2(g, k);
+			if (e > 1) {
+				a.fx += Math.cos(f) / e * forceAmp;
+				a.fy += Math.sin(f) / e * forceAmp;
+				h.fx -= Math.cos(f) / e * forceAmp;
+				h.fy -= Math.sin(f) / e * forceAmp
+			}
+		}
+	}
+}
+
+function onResize(a) {
+	reset()
+}
+
+function update() {
+	createNode();
+	for (var a = 0; a < points.length; a++) {
+		var b = points[a];
+		b.vx += b.fx;
+		b.vy += b.fy;
+		b.vx *= b.friction;
+		b.vy *= b.friction;
+		b.x += b.vx;
+		b.y += b.vy;
+		b.fx = 0;
+		b.fy = 0
+	}
+}
+
+function draw() {
+	if (diagram) {
+		voronoi.recycle(diagram)
+	}
+	diagram = voronoi.compute(points, boundingBox);
+	project.activeLayer.removeChildren();
+	var c = diagram.cells;
+	var g = c.length;
+	for (var d = 0; d < g; d++) {
+		var a = c[d];
+		var b = new Path();
+		b.closed = true;
+		b.fillColor = a.site.color;
+		b.strokeColor = a.site.color;
+		var e = a.halfedges;
+		for (j = 0; j < e.length; j++) {
+			var f = e[j].getEndpoint();
+			b.add(new Point(f))
+		}
+	}
+}
+
+function createNode() {
+	if (points.length < maxNodeNum) {
+		var c = new Node(view.size.width * 0.5, view.size.height * 0.5);
+		var a = Math.random() * 360 * Math.PI / 180;
+		c.x += Math.cos(a) * 10;
+		c.y += Math.sin(a) * 10;
+		points.push(c)
+	}
+	for (var b = points.length - 1; b > -1; b--) {
+		var d = points[b];
+		if (d.x < 0 - 200 || d.y < 0 - 200 || d.x > view.size.width + 200 || d.y > view.size.height + 200) {
+			points.splice(b, 1)
+		}
+	}
+	if (points.length > maxNodeNum * 2) {
+		points.splice(0, 1);
+		points.splice(0, 1)
+	}
+}
+var Node = function(c, h) {
+	this.x = c;
+	this.y = h;
+	this.vx = 0;
+	this.vy = 0;
+	this.fx = 0;
+	this.fy = 0;
+	this.friction = frictionAmp;
+	var f = Math.random();
+	var e = Math.random() * f;
+	var a = Math.random() * e;
+	var d = new Color(f, e, a);
+	d.hue = baseHue;
+	d.saturation = 1;
+	this.color = d
+};
+Node.prototype.update = function() {};
+setup();
+</script>
+</head>
+
+<body>
+	<canvas id="canvas" resize="true" style="user-select: none; touch-action: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 1280px; height: 591px;" width="2560" height="1182"></canvas>
+
+
+</body></html>
