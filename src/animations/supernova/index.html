@@ -26,7 +26,25 @@ var boundingBox;
 var mouseX;
 var mouseY;
 
+var colours = ['#72c2ad', '#87c7a3', '#a0cd8f', '#b6d37b', '#c5d76a', '#c5d76a', '#efefee', '#d9d9d6', '#27347b', '#2260ab', '#298dcc', '#52aedd', '#7ccdf3', '#7ccdf3', '#e8d3e7', '#e8d3e7'];
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+var hex;
+
 function setup() {
+	//black background
+    var rect = new Path.Rectangle({
+        point: [0, 0],
+        size: [view.size.width, view.size.height],
+        strokeColor: '#fff',
+        selected: true
+    });
+
+    rect.sendToBack();
+    rect.fillColor = '#fff';
 	voronoi = new Voronoi();
 	reset()
 }
@@ -180,7 +198,14 @@ var Node = function(c, h) {
 	var d = new Color(f, e, a);
 	d.hue = baseHue;
 	d.saturation = 1;
-	this.color = d
+	//this.color = d
+
+	var i = randomIntFromInterval(0, (colours.length -1));
+	//var col = new Color(r, g, b );
+	//col.hue = baseHue;
+	this.alpha = Math.random();
+	//this.color = col;
+	this.color = colours[i];
 };
 Node.prototype.update = function() {};
 setup();
