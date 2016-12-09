@@ -58,6 +58,7 @@ function randomIntFromInterval(min,max) {
 var hex;
 var  fill = randomIntFromInterval(0, (colours.length - 1));
 
+var started = false;
 
 void setup(){
   size(window.innerWidth,window.innerHeight);
@@ -70,6 +71,7 @@ void setup(){
 }
 
 void reset(){
+  if(!started) return;
 
   background(0);
   hex = randomIntFromInterval(0, (colours.length - 1));
@@ -86,6 +88,8 @@ void reset(){
 }
 
 void draw(){
+  if(!started) return;
+
   rad += 0.005;
   //background(0);
   if(random(0,1)<0.1){
@@ -197,6 +201,23 @@ class Node{
   float x, y, vx, vy, fx, fy;
   float px, py;
 }
+
+function getParamValue(paramName) {
+    var url = window.location.search.substring(1); //get rid of "?" in querystring
+    var qArray = url.split('&'); //get key-value pairs
+    for (var i = 0; i < qArray.length; i++) 
+    {
+        var pArr = qArray[i].split('='); //split key and value
+        if (pArr[0] == paramName) 
+            return pArr[1]; //return value
+    }
+}
+var time = getParamValue('time');
+
+window.setTimeout(function(){
+  started = true;
+  reset();
+}, time);
 </script>
 </head>
 
