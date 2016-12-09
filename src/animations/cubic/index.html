@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>Proton Decay</title>
+<title>Cubic</title>
 <script language="javascript" src="./assets/processing-1.4.1.min.js"></script>
 
 <style type="text/css">
@@ -85,9 +85,10 @@ do {
 }
 while (strokeColor === colours[hex]);
 
-
+var started = false;
 
 void reset(){
+  if(!started) return;
 
 
   timeCount = 0;
@@ -108,6 +109,8 @@ void reset(){
 }
 
 void draw(){
+  if(!started) return;
+  
   background(colours[hex]);
   //background(255, 200, 100); 
   
@@ -208,6 +211,23 @@ class Node{
     popMatrix();
   }
 }
+
+function getParamValue(paramName) {
+    var url = window.location.search.substring(1); //get rid of "?" in querystring
+    var qArray = url.split('&'); //get key-value pairs
+    for (var i = 0; i < qArray.length; i++) 
+    {
+        var pArr = qArray[i].split('='); //split key and value
+        if (pArr[0] == paramName) 
+            return pArr[1]; //return value
+    }
+}
+var time = getParamValue('time');
+
+window.setTimeout(function(){
+  started = true;
+  reset();
+}, time);
 </script>
 
 <body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>DRY LANDSCAPE</title>
+<title>Sine jump</title>
 <style type="text/css">
   @charset "UTF-8";
   /* CSS Document */
@@ -56,6 +56,7 @@ function randomIntFromInterval(min,max) {
 }
 
 var hex;
+var  fill = randomIntFromInterval(0, (colours.length - 1));
 
 
 void setup(){
@@ -123,9 +124,27 @@ void updateNodes(){
         n0.fy -= fy;
         n1.fx += fx;
         n1.fy += fy;
+
+        //if ((hex === 6) || (hex === 14) || (hex === 15)){ //avoid light stroke on light background
+          //fill = randomIntFromInterval(0, (colours.length - 1));
+          //stroke(colours[fill]);
+        //} 
+       /* else {
+          stroke(255, 255, 255);
+        }*/
+       // strokeWeight(2); 
         
         if(dist<100){
-          stroke(cos(rad)*128+128,(100-dist)*2.5 * 0.2);
+          //if((hex === 6) || (hex === 14) || (hex === 15)) {
+            //stroke(colours[fill]);
+          /*}
+          else {
+            stroke(255, 255, 255);
+          }*/
+
+          stroke(colours[fill],(100-dist)*2.5 * 0.2);
+         // console.log(cos(rad)*128+128,(100-dist)*2.5 * 0.2);
+
           line(n0.x, n0.y, n1.x, n1.y);
         }
       }
@@ -151,7 +170,9 @@ void updateNodes(){
 void drawNodes(){
   for(int i=0; i<nodes.size(); i++){
     Node n = (Node)nodes.get(i);
-    stroke(255,20);
+    
+    //stroke(colours[fill]);
+    stroke(colours[fill],20);
     float diameter = sqrt(n.vx * n.vx + n.vy * n.vy) * 5;
     //ellipse(n.x, n.y,diameter,diameter);
     line(n.px, n.py, n.x, n.y);
@@ -168,7 +189,8 @@ void removeNodes(){
 }
 
 void mousePressed(){
-  reset();
+  //reset();
+  fill = randomIntFromInterval(0, (colours.length - 1));
 }
 
 class Node{
