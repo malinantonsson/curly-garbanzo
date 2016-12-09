@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>DRY LANDSCAPE</title>
+<style type="text/css">
+  @charset "UTF-8";
+  /* CSS Document */
+  *{
+    font-family:Arial, Helvetica, sans-serif;
+    text-indent:0px;
+    margin:0px;
+    padding:0px;
+    color:#0;
+  }
+
+  body{
+    width:100%;
+    height:100%;
+  }
+
+  #canvas{
+    position: absolute;
+    left:     0px;
+      top:      0px;
+    width:100%;
+    height:100%;
+  }
+</style>
+
+<script language="javascript" src="./assets/processing-1.4.1.min.js"></script>
+<script language="javascript" src="./assets/GLDUtils.min.js"></script>
+<script>
+window.onload = function(){
+	var canvas = document.getElementsByTagName("canvas")[0];
+	var codeElm = document.getElementById("processing-code");
+	var code = codeElm.textContent || codeElm.innerHText;
+	new Processing(canvas, code);
+}
+</script>
+
+<script id="processing-code" type="application/processing">
+ArrayList nodes;
+float rad;
+float noiseScale;
+float noiseOffset0;
+float noiseOffset1;
+float windX;
+float windY;
+
+var colours = [#72c2ad, #87c7a3, #a0cd8f, #b6d37b, #c5d76a, #c5d76a, #efefee, #d9d9d6, #27347b, #2260ab, #298dcc, #52aedd, #7ccdf3, #7ccdf3, #e8d3e7, #ffffff];
+
+var strokeFills = [#27347b, #2260ab, #298dcc];
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+var hex;
+
+
+void setup(){
+  size(window.innerWidth,window.innerHeight);
+  window.onresize = function()
+	{
+		size(window.innerWidth,window.innerHeight);
+		reset();
+	};
+  reset();
+}
+
+void reset(){
+
+  background(0);
+  hex = randomIntFromInterval(0, (colours.length - 1));
+  background(colours[hex]);
+
+
+
+  nodes = new ArrayList();
+  noiseScale = random(1, 0.01);
+  noiseOffset0 = random(0,1000000);
+  noiseOffset1 = random(0,1000000);
+  windX = 0;
+  windY = 0;
+}
+
+void draw(){
+  rad += 0.005;
+  //background(0);
+  if(random(0,1)<0.1){
+    createNode();
+  }
+  updateNodes();
+  drawNodes();
+  removeNodes();
+}
+
+
+
+
+
+void createNode(){
+  Node n = new Node();
+  n.x = width * 0.5 + random(-5,5);
+  n.y = height * 0.5 + random(-5,5);
+  nodes.add(n);
+}
+
+void updateNodes(){
+  for(int i=0; i<nodes.size(); i++){
+    for(int j=i+1; j<nodes.size(); j++){
+      Node n0 = (Node)nodes.get(i);
+      Node n1 = (Node)nodes.get(j);
+      float dx = n1.x - n0.x;
+      float dy = n1.y - n0.y;
+      float dist = sqrt(dy*dy+dx*dx);
+      if(dist >1){
+        dx /= dist;
+        dy /= dist;
+        float fx = dx / dist / dist * 5;
+        float fy = dy / dist / dist * 5;
+        n0.fx -= fx;
+        n0.fy -= fy;
+        n1.fx += fx;
+        n1.fy += fy;
+        
+        if(dist<100){
+          stroke(cos(rad)*128+128,(100-dist)*2.5 * 0.2);
+          line(n0.x, n0.y, n1.x, n1.y);
+        }
+      }
+    }
+  }
+  for(int i=0; i<nodes.size(); i++){
+    Node n = (Node)nodes.get(i);
+    n.px = n.x;
+    n.py = n.y;
+    n.vx += (noise(n.x * noiseScale, n.y * noiseScale, noiseOffset0)-0.5)*0.1;
+    n.vy += (noise(n.x * noiseScale, n.y * noiseScale, noiseOffset1)-0.5)*0.1;
+    n.vx += n.fx + windX;
+    n.vy += n.fy + windY;
+    n.vx *= 0.99;
+    n.vy *= 0.99;
+    n.x += n.vx;
+    n.y += n.vy;
+    n.fx = 0;
+    n.fy = 0;
+  }
+}
+
+void drawNodes(){
+  for(int i=0; i<nodes.size(); i++){
+    Node n = (Node)nodes.get(i);
+    stroke(255,20);
+    float diameter = sqrt(n.vx * n.vx + n.vy * n.vy) * 5;
+    //ellipse(n.x, n.y,diameter,diameter);
+    line(n.px, n.py, n.x, n.y);
+  }
+}
+
+void removeNodes(){
+  for(int i=-1; i>-1; i--){
+    Node n = (Node)nodes.get(i);
+    if(n.x<-200 || n.x>width+200 || n.y<-200 || n.y>height+200){
+      nodes.remove(i);
+    }
+  }
+}
+
+void mousePressed(){
+  reset();
+}
+
+class Node{
+  float x, y, vx, vy, fx, fy;
+  float px, py;
+}
+</script>
+</head>
+
+<body>
+	<canvas id="canvas" tabindex="0" width="1280" height="635" style="image-rendering: -webkit-optimize-contrast !important;"></canvas>
+</body></html>

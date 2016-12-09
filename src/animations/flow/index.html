@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>FLOW</title>
+<link rel="stylesheet" href="./assets/style.css">
+<script language="javascript" src="./assets/pixi.min.js"></script>
+<script language="javascript" src="./assets/perlin.js"></script>
+</head>
+
+<body>
+	<canvas id="canvas"></canvas>
+
+<script language="javascript">
+var colours = ['0x72c2ad', '0x87c7a3', '0xa0cd8f', '0xb6d37b', '0xc5d76a', '0xc5d76a', '0xefefee', '0xd9d9d6', '0x27347b', '0x2260ab', '0x298dcc', '0x52aedd', '0x7ccdf3', '0x7ccdf3', '0xe8d3e7', '0xe8d3e7'];
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+var backgroundColor = colours[randomIntFromInterval(0, colours.length - 1)];
+do {
+    var fillColour = colours[randomIntFromInterval(0, (colours.length - 1))];
+}
+while (fillColour === backgroundColor);
+
+function init() {
+	renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight,{backgroundColor : backgroundColor}), document.body.appendChild(renderer.view), stage = new PIXI.Container, fadeSprite = new PIXI.Sprite, stage.addChild(fadeSprite), graphics = new PIXI.Graphics, stage.addChild(graphics), reset(), animate()
+}
+
+function reset() {
+	fadeTexture1 = new PIXI.RenderTexture(renderer, renderer.width, renderer.height), fadeTexture2 = new PIXI.RenderTexture(renderer, renderer.width, renderer.height), currentFadeTexture = fadeTexture1, fadeSprite.texture = currentFadeTexture, nodeLayers = [];
+	for (var e = 0; nodeLayerNum > e; e++) {
+		var r = new NodeLayer;
+		nodeLayers.push(r), 0 == e ? (r.nodeScale = 1 / 150, r.forceAmp = 2.5, r.color = fillColour) : 1 == e ? (r.nodeScale = 1 / 300, r.forceAmp = 5, r.color = fillColour) : (r.nodeScale = 1 / 600, r.forceAmp = 10, r.color = fillColour), nodes = [];
+		for (var t = 0; nodeNum > t; t++) {
+			var n = new Node;
+			setupNode(n), n.x = Math.random() * width, n.y = Math.random() * height, n.cnt = 255 * Math.random(), r.nodes.push(n)
+		}
+	}
+}
+
+function animate() {
+	update();
+	var e = fadeTexture1;
+	fadeTexture1 = fadeTexture2, fadeTexture2 = e, fadeSprite.texture = fadeTexture1, fadeSprite.alpha = .97, fadeTexture2.render(stage, null, !0), renderer.render(stage), requestAnimationFrame(animate)
+}
+
+function update() {
+	var e = graphics;
+	e.alpha = .07, e.clear(), time += .01;
+	for (var r, t, n = 0; nodeLayerNum > n; n++) {
+		var d = nodeLayers[n];
+		d.time += d.timeDelta, e.lineStyle(1, d.color);
+		for (var a = 0; nodeNum > a; a++) {
+			var i = d.nodes[a];
+			r = i.x * d.noiseScale, t = i.y * d.noiseScale, i.vx = .9 * i.vx + noise.perlin3(r, t, d.time) * d.forceAmp + Math.random() - .5, i.vy = .9 * i.vy + noise.perlin3(r, t, d.time + d.yTimeOffset) * d.forceAmp + Math.random() - .5, i.px = i.x, i.py = i.y, i.x += i.vx, i.y += i.vy, i.cnt--, Math.random() < .5 || (e.moveTo(i.px, i.py), e.lineTo(i.x, i.y), i.cnt < 0 && setupNode(i), (i.x < 0 || i.y < 0 || i.x > width || i.y > height) && setupNode(i))
+		}
+	}
+}
+
+function setupNode(e) {
+	Math.random() * Math.PI * 2, 10 * Math.random();
+	e.x = Math.random() * width, e.y = Math.random() * height, e.vx = 0, e.vy = 0, e.cnt = 128 + 128 * Math.random()
+}
+
+function NodeLayer() {
+	this.color, this.nodes = [], this.noiseScale = 1 / (100 + 800 * Math.random()), this.time = 1e7 * Math.random(), this.yTimeOffset = 1e4 * Math.random(), this.timeDelta = .05 + .005 * Math.random(), this.forceAmp
+}
+
+function Node() {}
+var renderer, stage, graphics, currentFadeTexture, fadeTexture1, fadeTexture2, fadeSprite, width = window.innerWidth,
+	height = window.innerHeight,
+	wind = 0,
+	time = 0,
+	noiseScale = .002,
+	nodeNum = 6e3,
+	nodes = [],
+	nodeLayerNum = 3,
+	nodeLayers = [];
+window.onresize = function() {
+	width = window.innerWidth, height = window.innerHeight, renderer.view.style.width = width + "px", renderer.view.style.height = height + "px", renderer.resize(width, height), reset()
+}, init();
+</script>
+
+</body></html>
