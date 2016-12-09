@@ -87,6 +87,7 @@
 			iframeContainer: '',
 			baseUrl: '../../transitions',
 			init: function(){
+				console.log('hey');
 				var iframe = document.querySelector('#transitionContainer');
 				transitions.iframeContainer = iframe;
 				this.show();
@@ -111,7 +112,7 @@
 	
 		window.onload = function() {
 			init();
-			transitions.init();
+			//transitions.init();
 		};
 		
 	})(window, document);

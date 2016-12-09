@@ -23,13 +23,28 @@
             display:none
         }
 
+        .gradientPlaceholder {
+            position: absolute;
+        }
+
     </style>
     <!-- build:js bodymovin.js -->
      <script src="bodymovin.js"></script>
    
 </head>
 <body>
+<svg class="gradientPlaceholder">
+  <defs>
+    <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#05a"/>
+      <stop offset="100%" stop-color="#0a5"/>
+    </linearGradient>
+  </defs>
+</svg>
+
 <div id="bodymovin"></div>
+
+
 
 <script>
 
